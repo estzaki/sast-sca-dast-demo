@@ -1,0 +1,29 @@
+stages:
+  - test
+
+variables:
+  GIT_DEPTH: "0"
+
+sast_sonarqube:
+  stage: test
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  script:
+    - sonar-scanner
+        -Dsonar.host.url="${SONAR_HOST_URL}"
+        -Dsonar.token="${SONAR_TOKEN}"
+        -Dsonar.projectKey="Vulnerable-Flask-App"
+        -Dsonar.sources="vulnerable_flask_app"
+        -Dsonar.qualitygate.wait=true
+  allow_failure: true
+
+sca_pip_audit:
+  stage: test
+  image: python:3.9-slim
+  before_script:
+    - python -m pip install --upgrade pip
+    - pip install pip-audit
+  script:
+    - pip-audit -r vulnerable_flask_app/requirements.txt
+  allow_failure: true
