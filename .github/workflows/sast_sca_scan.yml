@@ -29,11 +29,6 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=estzaki
-            -Dsonar.projectKey=estzaki_sast-sca-dast-demo
-            -Dsonar.sources=vulnerable_flask_app
 
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@v1
